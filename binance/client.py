@@ -3892,6 +3892,38 @@ class Client(BaseClient):
         """
         return self._request_margin_api('get', 'margin/crossMarginData', signed=True, data=params)
 
+    def get_isolated_margin_data(self, **params):
+        """
+
+        vipLevel	INT	NO	默认为用户当前VIP等级
+        symbol	STRING	NO
+        recvWindow	LONG	NO	赋值不能大于 60000
+        timestamp	LONG	YES
+
+        :returns:
+        [
+            {
+                "vipLevel": 0,
+                "symbol": "BTCUSDT",
+                "leverage": "10",
+                "data": [
+                    {
+                        "coin": "BTC",
+                        "dailyInterest": "0.00026125",
+                        "borrowLimit": "270"
+                    },
+                    {
+                        "coin": "USDT",
+                        "dailyInterest": "0.000475",
+                        "borrowLimit": "2100000"
+                    }
+                ]
+            }
+        ]
+        """
+        return self._request_margin_api('get', 'margin/isolatedMarginData', signed=True, data=params)
+
+
     def get_margin_interest_history(self, **params):
         """Get Interest History (USER_DATA)
 
@@ -7928,6 +7960,9 @@ class AsyncClient(BaseClient):
 
     async def get_cross_margin_data(self, **params):
         return await self._request_margin_api('get', 'margin/crossMarginData', signed=True, data=params)
+
+    async def get_isolated_margin_data(self, **params):
+        return await self._request_margin_api('get', 'margin/isolatedMarginData', signed=True, data=params)
 
     async def get_margin_interest_history(self, **params):
         return await self._request_margin_api('get', 'margin/interestHistory', signed=True, data=params)
